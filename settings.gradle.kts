@@ -33,4 +33,3 @@ refreshVersions {
 
 // gradle version >= 7.2
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-enableFeaturePreview("VERSION_CATALOGS")

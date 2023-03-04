@@ -83,7 +83,6 @@ configure(byTypePrefix("kotlin")) {
         }
 
         ktlint {
-            // TODO update to 0.46.1 as soon as supported
             version.set("0.48.1")
             verbose.set(true)
             outputToConsole.set(true)
