@@ -16,9 +16,10 @@ plugins {
     alias(libs.plugins.org.jlleitschuh.gradle.ktlint)
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 kover {
@@ -40,6 +41,12 @@ allprojects {
         mavenCentral()
         maven(url = "https://repo.spring.io/snapshot")
         maven(url = "https://repo.spring.io/milestone")
+    }
+
+    tasks {
+        test {
+            useJUnitPlatform()
+        }
     }
 }
 
@@ -73,12 +80,14 @@ configure(byTypePrefix("kotlin")) {
         plugin(rootProject.libs.plugins.org.jetbrains.kotlin.jvm.get().pluginId)
         plugin(rootProject.libs.plugins.org.jlleitschuh.gradle.ktlint.get().pluginId)
     }
+    dependencies {
+        implementation(rootProject.libs.jackson.module.kotlin)
+    }
 
     tasks {
         compileKotlin {
             kotlinOptions {
                 freeCompilerArgs = listOf("-Xjsr305=strict")
-                jvmTarget = "17"
             }
         }
 

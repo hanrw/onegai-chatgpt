@@ -14,11 +14,11 @@ com-linecorp-build-recipe-plugin = { id = "com.linecorp.build-recipe-plugin", ve
 
 org-jetbrains-kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version = "0.6.1" }
 
-org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.2.0" }
+org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.3.1" }
 
 [versions]
 
-spring-boot = "3.0.2"
+spring-boot = "3.0.4"
 
 kotlin = "1.8.10"
 
