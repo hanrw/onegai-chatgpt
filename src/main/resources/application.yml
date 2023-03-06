@@ -2,3 +2,6 @@ spring:
   webflux:
     problemdetails:
       enabled: true
+logging:
+  level:
+    root: debug

@@ -24,6 +24,8 @@ kotlin = "1.8.10"
 
 mockito-kotlin = "4.1.0"
 
+reactor-test = "3.5.3"
+
 [libraries]
 
 junit-platform-native = "org.graalvm.buildtools:junit-platform-native:0.9.18"
@@ -61,3 +63,6 @@ spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-star
 springdoc-openapi-starter-webflux-ui = "org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.2"
 
 ktlint = "com.pinterest:ktlint:0.48.2"
+
+## Test dependencies
+reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "reactor-test" }

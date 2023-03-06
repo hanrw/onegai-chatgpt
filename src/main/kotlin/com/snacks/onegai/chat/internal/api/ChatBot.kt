@@ -4,16 +4,16 @@ import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
 
 interface ChatBot {
-    fun chat(message: Message): Flux<String>
+    fun ask(question: Question): Flux<String>
 }
 
 @Component
 class ChatBotImpl : ChatBot {
-    override fun chat(message: Message): Flux<String> {
+    override fun ask(question: Question): Flux<String> {
         return Flux.just("expected")
     }
 }
 
-data class Message(
+data class Question(
     val content: String,
 )

@@ -120,6 +120,9 @@ configure(byLabel("spring-boot-webflux")) {
         implementation(rootProject.libs.springdoc.openapi.starter.webflux.ui)
         // OpenAPI Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
         implementation(rootProject.libs.spring.boot.starter.validation)
+
+        // Testing
+        testImplementation(rootProject.libs.reactor.test)
     }
 }
 

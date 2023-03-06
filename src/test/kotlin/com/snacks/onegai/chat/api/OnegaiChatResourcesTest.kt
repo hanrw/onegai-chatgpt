@@ -1,7 +1,7 @@
 package com.snacks.onegai.chat.api
 
 import com.snacks.onegai.chat.internal.api.ChatBot
-import com.snacks.onegai.chat.internal.api.Message
+import com.snacks.onegai.chat.internal.api.Question
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,7 +40,7 @@ class OnegaiChatResourcesTest {
                 }
         """.trimIndent()
 
-        whenever(chatBot.chat(Message("some-question"))).thenReturn(Flux.just("some-answer"))
+        whenever(chatBot.ask(Question("some-question"))).thenReturn(Flux.just("some-answer"))
 
         // when
         val result = webTestClient
