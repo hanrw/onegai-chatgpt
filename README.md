@@ -1,4 +1,8 @@
-# Chat GPT API
+# Onegai Chat GPT API - お愿い Chat GPT API
+
+[![Build Status](https://travis-ci.com/hanrw/onegai-chatgpt.svg?branch=main)](https://travis-ci.com/hanrw/onegai-chatgpt)
+[![codecov](https://codecov.io/gh/hanrw/onegai-chatgpt/branch/main/graph/badge.svg?token=QZQZQZQZQZ)](https://codecov.io/gh/hanrw/onegai-chatgpt)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This is a Kotlin and Spring-based API for generating text responses using GPT (Generative Pre-trained Transformer)
 language models. The API allows users to submit text prompts and receive generated text responses in real-time.
