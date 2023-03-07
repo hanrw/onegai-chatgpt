@@ -1,3 +1,4 @@
+import Google.Ar.Sceneform.plugin
 import com.linecorp.support.project.multi.recipe.configure
 import com.linecorp.support.project.multi.recipe.matcher.ProjectMatchers.Companion.byLabel
 import com.linecorp.support.project.multi.recipe.matcher.ProjectMatchers.Companion.byTypePrefix
@@ -14,6 +15,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlinx.kover)
     alias(libs.plugins.com.linecorp.build.recipe.plugin)
     alias(libs.plugins.org.jlleitschuh.gradle.ktlint)
+    id("com.google.osdetector") version "1.7.3"
 }
 
 kotlin {
@@ -46,6 +48,11 @@ allprojects {
     tasks {
         test {
             useJUnitPlatform()
+            extensions.configure(kotlinx.kover.api.KoverTaskExtension::class) {
+                isEnabled = true
+                reportFile.set(file("$buildDir/kover/test.exec"))
+            }
+            finalizedBy(koverReport)
         }
     }
 }
@@ -113,7 +120,15 @@ configure(byTypePrefix("kotlin")) {
 }
 
 configure(byLabel("spring-boot-webflux")) {
+    apply {
+        plugin("com.google.osdetector")
+    }
+
     dependencies {
+        // Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider
+        if (osdetector.arch.equals("aarch_64")) {
+            implementation("io.netty:netty-resolver-dns-native-macos:4.1.79.Final:osx-aarch_64")
+        }
         implementation(rootProject.libs.kotlinx.coroutines.reactor)
         implementation(rootProject.libs.spring.boot.starter.webflux)
         // OpenAPI

@@ -5,6 +5,7 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 class OnegaiApplication
+
 fun main(args: Array<String>) {
     runApplication<OnegaiApplication>(*args)
 }

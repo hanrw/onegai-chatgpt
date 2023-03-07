@@ -1,7 +1,17 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   webflux:
     problemdetails:
       enabled: true
-logging:
-  level:
-    root: debug
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+chatbots:
+  openai:
+    chatgpt:
+      base-url: https://api.openai.com
+      bearer-token: ${CHAT_GPT_BEARER_TOKEN:YOUR_TOKEN_HERE}
+server:
+  servlet:
+    context-path: /api

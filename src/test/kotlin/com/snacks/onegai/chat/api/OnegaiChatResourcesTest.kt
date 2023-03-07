@@ -1,7 +1,6 @@
 package com.snacks.onegai.chat.api
 
-import com.snacks.onegai.chat.internal.api.ChatBot
-import com.snacks.onegai.chat.internal.api.Question
+import com.snacks.onegai.chat.internal.infrastructure.openai.api.StreamChatGPTBot
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Flux
+import reactor.test.StepVerifier
 
 @WebFluxTest(OnegaiChatResources::class)
 class OnegaiChatResourcesTest {
@@ -17,7 +17,7 @@ class OnegaiChatResourcesTest {
     lateinit var webTestClient: WebTestClient
 
     @MockBean
-    lateinit var chatBot: ChatBot
+    lateinit var chatBot: StreamChatGPTBot
 
     @Test
     fun `ping should return pong response when request success`() {
@@ -34,24 +34,30 @@ class OnegaiChatResourcesTest {
     @Test
     fun `should return answer when get response from chat gpt`() {
         // given
-        val request = """
-                {
-                    "question": "some-question"
-                }
-        """.trimIndent()
+        val request = "some-question"
 
-        whenever(chatBot.ask(Question("some-question"))).thenReturn(Flux.just("some-answer"))
+        whenever(
+            chatBot.ask(request),
+        ).thenReturn(Flux.just(StreamChatGPTBot.ChatCompletion.dummy()))
 
         // when
         val result = webTestClient
-            .post()
-            .uri("/chat")
-            .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(request)
-            .exchange()
+            .get()
+            .uri {
+                it.path("/chat")
+                    .queryParam("question", request)
+                    .build()
+            }
+            .accept(MediaType.TEXT_EVENT_STREAM)
+            .exchange().expectStatus().isOk
 
         // then
-        result.expectStatus().isOk
-            .expectBody().equals("some-answer")
+        StepVerifier.create(result.returnResult(String::class.java).responseBody)
+            .expectNext(
+                """
+                {"answer":"dummy-content"}
+                """.trimIndent(),
+            )
+            .verifyComplete()
     }
 }

@@ -1,7 +1,8 @@
-package com.snacks.onegai.chat.infrastructure.openai
+package com.snacks.onegai.chat.infrastructure.openai.api.internal.api
 
-import com.snacks.onegai.chat.internal.api.Question
-import com.snacks.onegai.chat.internal.infrastructure.httpclient.ClientConfiguration
+import com.snacks.onegai.chat.internal.infrastructure.openai.internal.api.ComplicationRequest
+import com.snacks.onegai.chat.internal.infrastructure.openai.internal.api.Message
+import com.snacks.onegai.chat.internal.infrastructure.openai.internal.infrastructure.httpclient.ClientConfiguration
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -17,7 +18,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @ExtendWith(MockitoExtension::class)
-class ChatGPTBotTest {
+class StreamChatGPTClientTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     lateinit var webClient: WebClient
@@ -30,7 +31,7 @@ class ChatGPTBotTest {
         whenever(
             webClient
                 .method(HttpMethod.GET)
-                .uri("/ping", emptyMap<String, Any>())
+                .uri("/v1/chat/ping", emptyMap<String, Any>())
                 .retrieve()
                 .bodyToMono(any<ParameterizedTypeReference<String>>()),
         ).thenReturn(Mono.just("pong"))
@@ -50,7 +51,7 @@ class ChatGPTBotTest {
         whenever(
             webClient
                 .method(HttpMethod.POST)
-                .uri("/empty", emptyMap<String, Any>())
+                .uri("/v1/chat/empty", emptyMap<String, Any>())
                 .retrieve()
                 .bodyToFlux(any<ParameterizedTypeReference<String>>()),
         ).thenReturn(Flux.just("pong"))
@@ -67,19 +68,24 @@ class ChatGPTBotTest {
         // given
         val chatGPTBot = ClientConfiguration().chatGPTBot(ClientConfiguration().proxyFactory(webClient))
 
-        val question = Question("hello")
+        val question = ComplicationRequest(listOf(Message("some-question")))
+
         whenever(
             webClient
                 .method(HttpMethod.POST)
-                .uri("/ask", emptyMap<String, Any>())
+                .uri("/v1/chat/completions", emptyMap<String, Any>())
                 .retrieve()
                 .bodyToFlux(any<ParameterizedTypeReference<String>>()),
-        ).thenReturn(Flux.just("pong"))
+        ).thenReturn(
+            Flux.just(
+                "some-data",
+            ),
+        )
 
         // when
         val r = chatGPTBot.ask(question)
 
         // then
-        assertThat(r.blockFirst()).isEqualTo("pong")
+        assertThat(r.blockFirst()).isEqualTo("some-data")
     }
 }
