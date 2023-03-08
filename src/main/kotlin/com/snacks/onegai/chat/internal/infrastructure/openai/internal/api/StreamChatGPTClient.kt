@@ -16,30 +16,37 @@ interface StreamChatGPTClient {
     @PostExchange("/completions")
     fun ask(@RequestBody question: ComplicationRequest): Flux<String>
 
-    @PostExchange("/empty")
-    fun emptyPost(): Flux<String>
-
     @GetExchange("/ping")
     fun ping(): String
 }
 
 data class ComplicationRequest(
     val messages: List<Message>,
-    val model: String = "gpt-3.5-turbo",
+    val model: Model = Model.GPT_3_5_TURBO,
     val stream: Boolean = true,
 
 ) {
     companion object {
         fun Message(question: String): Message {
-            return Message(question, "user")
+            return Message(question, Role.USER)
         }
     }
 }
 
+enum class Model {
+    @JsonProperty("gpt-3.5-turbo")
+    GPT_3_5_TURBO,
+}
+
 data class Message(
     val content: String,
-    val role: String = "user",
+    val role: Role = Role.USER,
 )
+
+enum class Role {
+    @JsonProperty("user")
+    USER,
+}
 
 data class StreamComplicationResponse(
     val id: String,

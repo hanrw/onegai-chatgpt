@@ -58,5 +58,9 @@ class DefaultStreamChatGPTBot(private val client: StreamChatGPTClient, private v
             .map { objectMapper.readValue(it, StreamChatGPTBot.ChatCompletion::class.java) }
     }
 
-    private fun isValid(it: String) = it != "[DONE]"
+    private fun isValid(it: String) = it != DONE
+
+    companion object {
+        private const val DONE = "[DONE]"
+    }
 }

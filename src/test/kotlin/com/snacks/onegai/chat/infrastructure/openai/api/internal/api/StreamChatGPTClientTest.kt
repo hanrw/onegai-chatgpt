@@ -44,26 +44,6 @@ class StreamChatGPTClientTest {
     }
 
     @Test
-    fun `should return pong when get response from chat gpt`() {
-        // given
-        val chatGPTBot = ClientConfiguration().chatGPTBot(ClientConfiguration().proxyFactory(webClient))
-
-        whenever(
-            webClient
-                .method(HttpMethod.POST)
-                .uri("/v1/chat/empty", emptyMap<String, Any>())
-                .retrieve()
-                .bodyToFlux(any<ParameterizedTypeReference<String>>()),
-        ).thenReturn(Flux.just("pong"))
-
-        // when
-        val r = chatGPTBot.emptyPost()
-
-        // then
-        assertThat(r.blockFirst()).isEqualTo("pong")
-    }
-
-    @Test
     fun `should return answer when get response from chat gpt`() {
         // given
         val chatGPTBot = ClientConfiguration().chatGPTBot(ClientConfiguration().proxyFactory(webClient))

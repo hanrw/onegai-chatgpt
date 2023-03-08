@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
 
 @RestController
-class OnegaiChatResources(val streamChatGPTBot: StreamChatGPTBot) {
+class OnegaiChatResources(val chatGPTBot: StreamChatGPTBot) {
     @GetMapping("/ping")
     fun ping(): String {
         return """
@@ -20,7 +20,7 @@ class OnegaiChatResources(val streamChatGPTBot: StreamChatGPTBot) {
 
     @GetMapping("/chat", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     fun chat(@RequestParam question: String): Flux<ChatResponse> {
-        return streamChatGPTBot.ask(question).flatMapIterable {
+        return chatGPTBot.ask(question).flatMapIterable {
             it.choices
         }.mapNotNull {
             it.delta.content?.let { content -> ChatResponse(content) }
