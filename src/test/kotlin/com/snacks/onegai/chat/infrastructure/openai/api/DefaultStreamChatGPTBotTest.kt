@@ -13,6 +13,7 @@ import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
+import org.springframework.http.codec.ServerSentEvent
 import reactor.core.publisher.Flux
 
 @ExtendWith(MockitoExtension::class)
@@ -30,7 +31,28 @@ class DefaultStreamChatGPTBotTest {
     fun `ask should return chat completion when get response from chat gpt`() {
         // given:
         val question = "What is your name?"
-        whenever(client.ask(ComplicationRequest(listOf(ComplicationRequest.Message(question))))).thenReturn(Flux.just("some-data", "[DONE]"))
+
+
+        whenever(client.ask(ComplicationRequest(listOf(ComplicationRequest.Message(question))))).thenReturn(
+            Flux.just(
+                ServerSentEvent.builder(
+                    """
+                {
+                    "id": "string",
+                    "object": "string",
+                    "created": 1234567890,
+                    "model": "string",
+                    "choices": [{
+                        "delta": "dummy-content",
+                        "index": 0,
+                        "finish_reason": "dummy-finish-reason"
+                    }]
+                }
+                """.trimIndent()
+                ).build(),
+                ServerSentEvent.builder("[DONE]").build()
+            )
+        )
         val chatCompletion = StreamChatGPTBot.ChatCompletion.dummy()
         whenever(
             objectMapper.readValue(

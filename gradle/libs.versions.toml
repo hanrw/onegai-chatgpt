@@ -16,15 +16,20 @@ org-jetbrains-kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version = "0
 
 org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.3.1" }
 
+org-jetbrains-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" } ## https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
+
 [versions]
 
-spring-boot = "3.0.4"
+spring-boot = "3.0.6"
 
-kotlin = "1.8.10"
+kotlin = "1.8.20"
+
+ktor-serialization = "2.3.0"
 
 mockito-kotlin = "4.1.0"
 
 reactor-test = "3.5.3"
+
 
 [libraries]
 
@@ -46,6 +51,8 @@ spring-boot-starter-validation = { module = "org.springframework.boot:spring-boo
 
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor-serialization" }
+
 kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor" }
 
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
@@ -53,10 +60,6 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
 
 kotlin-scripting-compiler-embeddable = { group = "org.jetbrains.kotlin", name = "kotlin-scripting-compiler-embeddable", version.ref = "kotlin" }
-
-kotlin-allopen = { group = "org.jetbrains.kotlin", name = "kotlin-allopen", version.ref = "kotlin" }
-
-kotlin-noarg = { group = "org.jetbrains.kotlin", name = "kotlin-noarg", version.ref = "kotlin" }
 
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 

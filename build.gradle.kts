@@ -15,6 +15,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlinx.kover)
     alias(libs.plugins.com.linecorp.build.recipe.plugin)
     alias(libs.plugins.org.jlleitschuh.gradle.ktlint)
+    alias(libs.plugins.org.jetbrains.plugin.serialization)
     id("com.google.osdetector") version "1.7.3"
 }
 
@@ -88,7 +89,7 @@ configure(byTypePrefix("kotlin")) {
         plugin(rootProject.libs.plugins.org.jlleitschuh.gradle.ktlint.get().pluginId)
     }
     dependencies {
-        implementation(rootProject.libs.jackson.module.kotlin)
+        implementation(rootProject.libs.ktor.serialization.kotlinx.json)
     }
 
     tasks {
